@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unter Druck die Nerven behalten – 3 Übungen</title>
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--tx:#1f2430;--mu:#5d6475;--ac:#2f6f6b;--acbg:#e1f0ee;--ok:#1f7a3d;--okbg:#e2f4e8;--no:#b3261e;--nobg:#fbe7e5;--bd:#dcdad2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171c;--card:#1d2128;--tx:#eceef2;--mu:#a3aab8;--ac:#6cc0b9;--acbg:#1f3533;--ok:#6fd08c;--okbg:#17301f;--no:#f2928b;--nobg:#3a1f1d;--bd:#323844}}
+:root[data-theme="dark"]{--bg:#14171c;--card:#1d2128;--tx:#eceef2;--mu:#a3aab8;--ac:#6cc0b9;--acbg:#1f3533;--ok:#6fd08c;--okbg:#17301f;--no:#f2928b;--nobg:#3a1f1d;--bd:#323844}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:.2em 0}
+.sub{color:var(--mu);margin:0 0 18px}
+nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+nav button{flex:1;min-width:120px}
+button,select,textarea{font:inherit;color:var(--tx)}
+button{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;cursor:pointer}
+button:hover{border-color:var(--ac)}
+button.on{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.opt{display:block;width:100%;text-align:left;margin:8px 0}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.no{background:var(--nobg);border-color:var(--no)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--acbg)}
+.pri{background:var(--ac);color:var(--bg);border-color:var(--ac);margin-top:12px}
+.row{display:grid;gap:6px;margin:12px 0}
+select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip.on{background:var(--acbg);border-color:var(--ac);color:var(--tx)}
+#circle{width:120px;height:120px;border-radius:50%;background:var(--acbg);border:3px solid var(--ac);margin:16px auto;display:flex;align-items:center;justify-content:center;text-align:center;transition:transform 4s ease-in-out;font-weight:600}
+.hide{display:none}
+.bar{height:8px;background:var(--bd);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
+.small{color:var(--mu);font-size:.9rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Unter Druck die Nerven behalten</h1>
+<p class="sub">3 interaktive Übungen zum TED-Ed-Video von Noa Kageyama und Pen-Pen Chen. Schau zuerst das Video, dann leg los.</p>
+<nav>
+<button class="on" data-t="1">1 · Quiz</button>
+<button data-t="2">2 · Zuordnen</button>
+<button data-t="3">3 · Dein Plan</button>
+</nav>
+
+<section id="t1" class="card"></section>
+
+<section id="t2" class="card hide">
+<p><b>Welche Strategie passt zu welcher Situation?</b> Wähle pro Situation eine Strategie.</p>
+<div id="match"></div>
+<button class="pri" id="chk">Prüfen</button>
+<div id="mres" class="fb hide"></div>
+</section>
+
+<section id="t3" class="card hide">
+<p><b>Dein persönlicher Druck-Plan</b> – in drei kurzen Schritten.</p>
+<div class="row"><label for="w"><b>1. Sorgen ausleeren:</b> Schreibe auf, was dir vor deinem nächsten wichtigen Moment durch den Kopf geht.</label>
+<textarea id="w" rows="3" placeholder="z. B. Ich könnte mich verspielen, alle schauen zu …"></textarea></div>
+<div class="row"><b>2. Wähle ein Schlüsselwort</b> für den Fokus auf den Ablauf statt auf das Ergebnis:
+<div class="chips" id="chips"></div></div>
+<div class="row"><b>3. Atme dich ein:</b> sechs ruhige Atemzüge.
+<div id="circle">Start</div>
+<button id="go">Atemübung starten</button></div>
+<div id="plan" class="fb hide"></div>
+</section>
+
+<p class="small">Inhalte nach dem Video zusammengefasst; Details können von der Originalfassung abweichen.</p>
+</main>
+<script>
+var Q=[
+{q:"Was passiert laut Video oft, wenn wir „einknicken“ (choken)?",o:["Wir haben die Fähigkeit plötzlich verlernt","Sorgen und Überdenken stören Abläufe, die eigentlich automatisch laufen","Wir üben zu viel","Unser Körper wird müde"],a:1,e:"Unter Druck belegen Sorgen den Arbeitsspeicher, und bewusstes Kontrollieren stört eingeübte, automatische Bewegungen."},
+{q:"Welche Übung bereitet am besten auf den Ernstfall vor?",o:["Immer allein und entspannt üben","Üben unter ähnlichen Bedingungen wie im Ernstfall, z. B. vor Publikum oder mit Aufnahme","Gar nicht mehr üben","Nur theoretisch darüber nachdenken"],a:1,e:"Wer Druck in der Übung simuliert, gewöhnt sich an die Situation und erlebt sie im Ernstfall weniger neu."},
+{q:"Worauf sollst du dich im entscheidenden Moment konzentrieren?",o:["Auf jeden einzelnen Detailschritt","Auf das Ergebnis und die Folgen","Auf ein ruhiges Gesamtgefühl oder ein Schlüsselwort","Auf die Zuschauer"],a:2,e:"Ein Schlüsselwort oder Gesamtgefühl lenkt vom Zerdenken und von Sorgen ab."},
+{q:"Wahr oder falsch: Nervosität ist immer ein Zeichen, dass man schlecht vorbereitet ist.",o:["Wahr","Falsch"],a:1,e:"Auch gut Vorbereitete spüren Druck. Wichtig ist, wie man damit umgeht."},
+{q:"Was kann vor einer Prüfung helfen, laut der im Video erwähnten Idee?",o:["Sorgen vorher aufschreiben","Möglichst nichts essen","Alles noch einmal hektisch lesen","Sich nicht mit den Gefühlen beschäftigen"],a:0,e:"Das Aufschreiben von Sorgen entlastet das Arbeitsgedächtnis, sodass mehr Kapazität für die Aufgabe bleibt."}
+];
+var qi=0,sc=0,t1=document.getElementById("t1");
+function showQ(){
+ if(qi>=Q.length){t1.innerHTML="<h3>Ergebnis: "+sc+" / "+Q.length+"</h3><p>"+(sc>=4?"Stark! Du hast die Kernideen verstanden.":"Schau dir das Video gern noch einmal an und versuch es erneut.")+"</p><button class='pri' onclick='qi=0;sc=0;showQ()'>Nochmal</button>";return}
+ var c=Q[qi],h="<div class='bar'><i style='width:"+(qi/Q.length*100)+"%'></i></div><p class='small'>Frage "+(qi+1)+" von "+Q.length+"</p><p><b>"+c.q+"</b></p>";
+ c.o.forEach(function(x,i){h+="<button class='opt' data-i='"+i+"'>"+x+"</button>"});
+ t1.innerHTML=h+"<div id='fb'></div>";
+ t1.querySelectorAll(".opt").forEach(function(b){b.onclick=function(){
+  var i=+b.dataset.i,c=Q[qi];
+  t1.querySelectorAll(".opt").forEach(function(x){x.disabled=true});
+  t1.querySelectorAll(".opt")[c.a].classList.add("ok");
+  if(i===c.a)sc++;else b.classList.add("no");
+  document.getElementById("fb").innerHTML="<div class='fb'>"+c.e+"</div><button class='pri' id='nx'>Weiter</button>";
+  document.getElementById("nx").onclick=function(){qi++;showQ()};
+ }});
+}
+showQ();
+
+var S=["Druck simulieren","Schlüsselwort nutzen","Sorgen aufschreiben","Ruhig atmen"];
+var M=[
+["Du spielst morgen vor Publikum. Bisher hast du nur im Zimmer geübt.",0],
+["Du merkst mitten im Vortrag, dass du jeden Satz zerdenkst.",1],
+["Vor der Klausur kreisen deine Gedanken um ein mögliches Scheitern.",2],
+["Dein Herz rast kurz vor dem Auftritt.",3]];
+var mh="";
+M.forEach(function(m,i){mh+="<div class='row'><label for='m"+i+"'>"+m[0]+"</label><select id='m"+i+"'><option value=''>– wählen –</option>"+S.map(function(s,j){return"<option value='"+j+"'>"+s+"</option>"}).join("")+"</select></div>"});
+document.getElementById("match").innerHTML=mh;
+document.getElementById("chk").onclick=function(){
+ var n=0;M.forEach(function(m,i){var s=document.getElementById("m"+i);if(+s.value===m[1]&&s.value!=="")n++});
+ var r=document.getElementById("mres");r.classList.remove("hide");
+ r.textContent=n===4?"Alles richtig! Du hast jede Situation passend zugeordnet.":n+" von 4 richtig. Überlege noch einmal: Was belastet dich hier: die fehlende Gewöhnung, das Zerdenken, die Sorgen oder die körperliche Anspannung?";
+};
+
+var K=["ruhig","fließend","weich","klar","Atem"],ks="";
+var ch=document.getElementById("chips");
+K.forEach(function(k){var b=document.createElement("button");b.className="chip";b.textContent=k;b.onclick=function(){ch.querySelectorAll(".chip").forEach(function(x){x.classList.remove("on")});b.classList.add("on");ks=k;done()};ch.appendChild(b)});
+var br=false,cc=document.getElementById("circle");
+document.getElementById("go").onclick=function(){
+ if(br)return;br=true;var n=0,ein=true;
+ function step(){
+  if(n>=12){cc.textContent="Geschafft";cc.style.transform="scale(1)";br=false;bd=true;done();return}
+  cc.textContent=ein?"Ein":"Aus";cc.style.transform=ein?"scale(1.35)":"scale(1)";
+  ein=!ein;n++;setTimeout(step,4000);
+ }
+ step();
+};
+var bd=false;
+function done(){
+ var p=document.getElementById("plan"),w=document.getElementById("w").value.trim();
+ if(!ks&&!bd&&!w){p.classList.add("hide");return}
+ p.classList.remove("hide");
+ p.innerHTML="<b>Dein Plan:</b><br>Vorher: Sorgen "+(w?"aufgeschrieben ✓":"noch nicht aufgeschrieben")+"<br>Im Moment: Schlüsselwort „"+(ks||"noch offen")+"“<br>Zur Beruhigung: Atemübung "+(bd?"gemacht ✓":"noch offen");
+}
+document.getElementById("w").oninput=done;
+
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){
+ document.querySelectorAll("nav button").forEach(function(x){x.classList.toggle("on",x===b)});
+ ["1","2","3"].forEach(function(t){document.getElementById("t"+t).classList.toggle("hide",t!==b.dataset.t)});
+}});
+</script>
+</body>
+</html>
